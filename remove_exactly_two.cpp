@@ -53,14 +53,19 @@ int findremovingElement(map<int,set<int>>&adj, vector<int>&inorder){
             }
         }
         // cout<<temp<<" "<<count<<" "<<k[i]<<endl;
-        if(temp < ansinorder){
+        // if(temp < ansinorder){
+        //     ans = k[i];
+        //     ansinorder = temp;
+        //     countinorder = count;
+        // }
+        // else if(temp == ansinorder && count > countinorder){
+        //     ans = k[i];
+        //     countinorder = count;
+        // }
+        if(count>countinorder){
             ans = k[i];
+            countinorder = count;
             ansinorder = temp;
-            countinorder = count;
-        }
-        else if(temp == ansinorder && count > countinorder){
-            ans = k[i];
-            countinorder = count;
         }
         // cout<<ans<<endl;
     }
@@ -96,7 +101,7 @@ int main()
         inorder[0] = -1;
 
         int a = findremovingElement(adj,inorder);
-        // cout<<a<<endl;
+        cout<<a<<endl;
 
         for(auto i : adj[a]){
             adj[i].erase(a);
@@ -107,7 +112,7 @@ int main()
         visited[a] = true;
 
         a = findremovingElement(adj, inorder);
-        // cout<<a<<endl;
+        cout<<a<<endl;
 
         for(auto i : adj[a]){
             adj[i].erase(a);
