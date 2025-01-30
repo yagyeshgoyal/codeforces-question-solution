@@ -50,7 +50,7 @@ int main()
             }
         }
 
-        ans a = findans()
+        
 
     }
 

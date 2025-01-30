@@ -1,84 +1,87 @@
 #include<iostream>
 #include<vector>
+#include<set>
 #include<map>
+#include<unordered_map>
 #include<queue>
-#include<limits.h>
+#include<cmath>
+#include<bits/stdc++.h>
 using namespace std;
+
+bool findans(int node, int val ,int prev, map<int, vector<int>>&mp, int arr[]){
+
+    if(!mp.count(node)){
+        if(val+prev <= arr[node-1]){
+            return true;
+        }
+
+        return false;
+    }
+
+    int temp = (val + prev <= arr[node-1])? 0 : val + prev - arr[node-1];
+
+    bool flage = true;
+
+    for(auto i : mp[node]){
+        flage = flage && findans(i,val,temp,mp,arr);
+
+        if(!flage){
+            break;
+        }
+    }
+
+    return flage;
+}
 
 int main()
 {
     int t;
     cin>>t;
-
     while(t--){
         int n;
         cin>>n;
 
         int arr[n];
-        int mini = INT_MAX;
         for(int i=0; i<n; i++){
             cin>>arr[i];
-            
-            if(i!= 0){
-                mini = min(mini,arr[i]);
-            }
         }
-
-        map<int,vector<int>>mp;
-        // int arr2[n-1];
-        for(int i=1; i<n; i++){
-            // cin>>arr2[i-1];
-            int a ;
+        
+        map<int,vector<int>>adj;
+        for(int i=0; i<n-1; i++){
+            int a;
             cin>>a;
-            mp[a-1].push_back(i);
+
+            adj[a].push_back(i+2);
         }
 
-        arr[0] = arr[0] + mini;
+        int s = 0;
+        int e = 200000;
 
-        int k = 0;
+        while(s<=e){
+            int mid = s + (e-s)/2;
+            cout<<s<< " " <<e<<endl;
+            
+            bool flage = true;
 
-        for(int i=1; i<n; i++){
-            arr[i] = arr[i]-mini;
+            for(auto i : adj[1]){
+                flage = flage && findans(i,mid,0,adj, arr);
 
-            if(arr[i] == 0){
-                k=i;
-            }
-        }
-
-        queue<int>q;
-        for(auto i : mp[k]){
-            q.push(i);
-        }
-
-        mini = INT_MAX;
-
-        while(!q.empty()){
-            auto front = q.front();
-            q.pop();
-
-            mini = min(mini,arr[front]);
-
-            for(auto j : mp[front]){
-                q.push(j);
+                if(!flage){
+                    break;
+                }
             }
 
-        }
-
-        mini = mini/2;
-
-        for(int i=1; i<n; i++){
-            if(i!=k){
-                mini = min(mini,arr[i]);
+            if(flage){
+                s = mid+1;
             }
+            else{e = mid-1;}
         }
 
-        arr[0] = arr[0] + mini;
 
-        cout<<arr[0]<<endl;
+        cout<<e+arr[0]<<endl;
 
 
     }
-
 
     return 0;
 }
