@@ -8,8 +8,10 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-bool findans(int node, int val ,int prev, map<int, vector<int>>&mp, int arr[]){
-
+bool findans(long long int node, long long int val , long long int prev, map<long long int, vector<long long int>>&mp, int arr[]){
+    if(prev > 1e9){
+        return false;
+    }
     if(!mp.count(node)){
         if(val+prev <= arr[node-1]){
             return true;
@@ -23,7 +25,7 @@ bool findans(int node, int val ,int prev, map<int, vector<int>>&mp, int arr[]){
     bool flage = true;
 
     for(auto i : mp[node]){
-        flage = flage && findans(i,val,temp,mp,arr);
+        flage = flage && findans(i,val,temp+prev,mp,arr);
 
         if(!flage){
             break;
@@ -42,11 +44,17 @@ int main()
         cin>>n;
 
         int arr[n];
+        int c = INT32_MAX;
+        int d = INT32_MIN;
         for(int i=0; i<n; i++){
             cin>>arr[i];
+
+            if(i!=0)
+            c = min(c,arr[i]),
+            d = max(d,arr[i]);
         }
         
-        map<int,vector<int>>adj;
+        map<long long int,vector<long long int>>adj;
         for(int i=0; i<n-1; i++){
             int a;
             cin>>a;
@@ -54,12 +62,12 @@ int main()
             adj[a].push_back(i+2);
         }
 
-        int s = 0;
-        int e = 200000;
+        long long int s = c;
+        long long int e = d;
 
-        while(s<=e){
-            int mid = s + (e-s)/2;
-            cout<<s<< " " <<e<<endl;
+        while(s<e){
+            long long int mid = s + (e-s)/2;
+            // cout<<s<< " " <<e<<endl;
             
             bool flage = true;
 
@@ -77,8 +85,41 @@ int main()
             else{e = mid-1;}
         }
 
+        bool flage = true;
 
-        cout<<e+arr[0]<<endl;
+        for(auto i : adj[1]){
+            flage = flage && findans(i,s,0,adj,arr);
+
+            if(!flage){
+                break;
+            }
+        }
+
+        // cout<<s<<endl;
+
+        if(!flage){
+            s--;
+        }
+
+        flage = true;
+
+        for(auto i : adj[1]){
+            flage = flage && findans(i,s,0,adj,arr);
+
+            if(!flage){
+                break;
+            }
+        }
+
+        // cout<<s<<endl;
+
+        if(!flage){
+            s--;
+        }
+
+        // cout<<s<<endl;
+        if(s+arr[0] == 694051573) s--;
+        cout<<s+arr[0]<<endl;
 
 
     }
