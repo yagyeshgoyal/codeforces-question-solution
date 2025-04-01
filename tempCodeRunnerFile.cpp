@@ -1,5 +1,1 @@
-or(auto i = s ; i<=e; i++){
-    //     cout<<*i<<" ";
-    // }
-    // // cout<<endl;
-    // cout<<" -> "<<inversion<<endl;
+(l+abs((l&k) - (l|k)))^(k+abs((l&k) - (l|k)))
