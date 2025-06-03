@@ -1,1 +1,2 @@
-(l+abs((l&k) - (l|k)))^(k+abs((l&k) - (l|k)))
+int n;
+        // cin>>n;
