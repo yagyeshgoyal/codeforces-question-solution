@@ -16,27 +16,29 @@ int main()
         int n;
         cin>>n;
 
-        map<int,vector<int>>mp;
+        vector<int>arr;
 
         for(int i=0; i<n; i++){
             int a;
             cin>>a;
-            mp[a].push_back(i);
+            arr.push_back(a);
         }
 
         long long int ans = INT64_MAX;
 
-        for(auto i : mp){
-            int a = i.first;
-            int s = 0;
-            long long int temp = 0;
-            for(auto j : i.second){
-                temp = temp + 1ll*(j-s)*a;
-                s = j+1;
+        int i = 0;
+        while(i<n){
+            long long temp = 1ll*(i-0)*arr[i];
+            int j = i;
+            while(j<n && arr[j] == arr[i]){
+                j++;
             }
-            temp  = temp + 1ll*(n-s)*a;
+            temp += 1ll*(n-j)*arr[i];
+            // cout<<(n-j)*arr[i]<<endl;
+            // cout<<temp<<" "<<i<<" "<<j<<endl;
+            ans = min(ans, temp);
 
-            ans = min(ans,temp);
+            i = j;
         }
 
         cout<<ans<<endl;
