@@ -1,64 +1,91 @@
 #include<iostream>
 #include<vector>
+#include<stack>
 using namespace std;
 
-void solve(){
+void solve(int c){
     int n;
     cin>>n;
 
     int arr[n];
-    int k = 0;
-    int maxi = -1;
+
     for(int i=0; i<n; i++){
         cin>>arr[i];
 
-        if(arr[i]>maxi){
-            maxi = arr[i];
-            k = i;
+    }
+
+    // if(c == 465){
+    //     string temp = to_string(n);
+    //     temp = temp + "&";
+    //     for(int i=0; i<n; i++){
+    //         temp += to_string(arr[i]) + "&";
+    //     }
+    //     cout<<temp<<endl;
+    //     cout<<endl;
+    // }
+    stack<int>s1;
+    stack<int>s2;
+    s1.push(arr[0]);
+    for(int i=1; i<n; i++){
+        if(arr[i] <= s1.top() && s2.size()>0 && arr[i] <= s2.top()){
+            // cout<<arr[i]<<" "<<s1.top()<<" "<<s2.top()<<endl;
+            if(s1.top() <= s2.top()){
+                // cout<<"k"<<endl;
+                s1.push(arr[i]);
+            }
+            else{
+                s2.push(arr[i]);
+            }
+        }
+        else if(arr[i]<= s1.top()){
+            s1.push(arr[i]);
+        }
+        else if(s2.size() == 0){
+            s2.push(arr[i]);
+        }
+        else if(arr[i] <= s2.top()){
+            s2.push(arr[i]);
+        }
+        else {
+            if(s1.top() <= s2.top()){
+                s1.push(arr[i]);
+            }
+            else{
+                s2.push(arr[i]);
+            }
         }
     }
 
-    if(n == 1){
-        cout<<0<<endl;
-        return ;
-    }
-    if(n == 2){
-        cout<<0<<endl;
-        return ;
-    }
-    
-    vector<int>s;
-    vector<int>t;
-    s.push_back(k);
-    for(int i=k+1; i<n; i++){
-        if(arr[i]<=arr[k]){
-            s.push_back(i);
-            k=i;
-        }
-    }
-    k = 0;
-    for(int i=0; i<n; i++){
-        if(i == s[k]){
-            k++;
-        }
-        else{
-            t.push_back(arr[i]);
-        }
-    }
-    // for(int i=0; i<s.size(); i++){
-    //     cout<<s[i]<<endl;
-    // }
-    // for(int i=0; i<t.size(); i++){
-    //     cout<<t[i]<<endl;
-    // }
     int count = 0;
-    for(int i=1; i<t.size(); i++){
-        if(t[i]>t[i-1]){
+    int num = s1.top();
+    s1.pop();
+    // cout<<num<<endl;
+
+    while(s1.size()>0){
+        if(s1.top() < num){
             count++;
+        }
+        num = s1.top();
+        s1.pop();
+        // cout<<num<<endl;
+    }
+
+    if(s2.size()>0){
+        num = s2.top();
+        s2.pop();
+        while(s2.size()>0){
+            if(s2.top() < num){
+                count++;
+            }
+            num = s2.top();
+            s2.pop();
         }
     }
 
     cout<<count<<endl;
+
+
+    
     return ;
 }
 
@@ -66,8 +93,10 @@ int main()
 {
     int t;
     cin>>t;
+    int count = 0;
     while(t--){
-        solve();
+        count++;
+        solve(count);
     }
 
 
