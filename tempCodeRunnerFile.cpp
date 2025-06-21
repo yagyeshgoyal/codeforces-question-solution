@@ -1,4 +1,1 @@
-    cin >> n;
-        vector<int> a(n);
-        for (int &x : a) cin >> x;
-        cou
+(d-1)/2
